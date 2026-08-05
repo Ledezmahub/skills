@@ -1,0 +1,34 @@
+package com.[company].[appname].data.local.entity
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.Instant
+
+/**
+ * [ENTITY_NAME] Entity
+ * Represents [ENTITY_DESCRIPTION] in the database.
+ */
+@Entity(tableName = "[table_name]")
+data class [ENTITY_NAME](
+    @PrimaryKey(autoGenerate = true) 
+    val id: Long = 0,
+    // Add your properties here
+    // Example:
+    // val name: String,
+    // val description: String? = null,
+    // val amount: Double,
+    
+    @ColumnInfo(name = "created_at")
+    val createdAt: Instant = Instant.now(),
+    
+    @ColumnInfo(name = "updated_at")
+    val updatedAt: Instant = Instant.now()
+)
+
+/**
+ * Example enum for status
+ */
+enum class [ENTITY_NAME]Status {
+    ACTIVE, INACTIVE, ARCHIVED
+}
