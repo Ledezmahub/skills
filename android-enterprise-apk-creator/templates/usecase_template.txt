@@ -1,0 +1,57 @@
+package com.[company].[appname].domain.usecase
+
+import com.[company].[appname].domain.model.[ENTITY_NAME]
+import com.[company].[appname].domain.repository.[ENTITY_NAME]Repository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+/**
+ * Use Cases for [ENTITY_NAME]
+ */
+class [ENTITY_NAME]UseCases @Inject constructor(
+    private val repository: [ENTITY_NAME]Repository
+) {
+    fun getAll(): Flow<List<[ENTITY_NAME]>> {
+        return repository.getAll()
+    }
+    
+    fun getById(id: Long): Flow<[ENTITY_NAME]?> {
+        return repository.getById(id)
+    }
+    
+    suspend fun insert(entity: [ENTITY_NAME]): Long {
+        require(entity.name.isNotBlank()) { "Name is required" }
+        return repository.insert(entity)
+    }
+    
+    suspend fun update(entity: [ENTITY_NAME]) {
+        require(entity.id > 0) { "ID must be set for update" }
+        repository.update(entity)
+    }
+    
+    suspend fun delete(entity: [ENTITY_NAME]) {
+        repository.delete(entity)
+    }
+    
+    fun search(query: String): Flow<List<[ENTITY_NAME]>> {
+        return repository.search(query)
+    }
+    
+    fun getStats(): Flow<[ENTITY_NAME]Stats> {
+        return repository.getAll().map { items ->
+            [ENTITY_NAME]Stats(
+                totalCount = items.size,
+                activeCount = items.count { it.status == [ENTITY_NAME]Status.ACTIVE }
+            )
+        }
+    }
+    
+    fun validate(entity: [ENTITY_NAME]) {
+        require(entity.name.isNotBlank()) { "Name is required" }
+    }
+}
+
+data class [ENTITY_NAME]Stats(
+    val totalCount: Int = 0,
+    val activeCount: Int = 0
+)
