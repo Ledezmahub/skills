@@ -1,0 +1,48 @@
+Hilt Module Template for Android Enterprise APK Creator
+
+This template provides dependency injection setup using Hilt.
+
+Key Components:
+- Database: Room database instance
+- OkHttpClient: With logging interceptor and timeouts
+- Retrofit: With base URL and Gson converter
+- EncryptedSharedPreferences: For secure storage
+- API Services: Retrofit service interfaces
+- Repositories: Data repository implementations
+- UseCases: Business logic use cases
+
+Usage:
+1. Replace placeholders with actual types
+2. Add all DAO providers
+3. Add all API service providers
+4. Add all repository providers
+5. Add all use case providers
+
+Example structure:
+@Module
+@InstallIn(SingletonComponent::class)
+object AppModule {
+    @Provides
+    @Singleton
+    fun provideDatabase(context: Context): AppDatabase { ... }
+    
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient { ... }
+    
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit { ... }
+    
+    @Provides
+    @Singleton
+    fun provideApiService(retrofit: Retrofit): ApiService { ... }
+    
+    @Provides
+    @Singleton
+    fun provideRepository(apiService: ApiService, dao: Dao): Repository { ... }
+    
+    @Provides
+    @Singleton
+    fun provideUseCases(repository: Repository): UseCases { ... }
+}
