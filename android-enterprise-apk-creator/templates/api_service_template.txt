@@ -1,0 +1,52 @@
+package com.[company].[appname].data.remote.api
+
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+/**
+ * Retrofit API Service for [ENTITY_NAME]
+ */
+interface [ENTITY_NAME]ApiService {
+    @GET("[entity_name_lower]")
+    suspend fun getAll(
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null
+    ): Response<ApiResponse<List<[ENTITY_NAME]Dto>>>
+    
+    @GET("[entity_name_lower]/{id}")
+    suspend fun getById(@Path("id") id: Long): Response<ApiResponse<[ENTITY_NAME]Dto>>
+    
+    @POST("[entity_name_lower]")
+    suspend fun create(@Body dto: [ENTITY_NAME]Dto): Response<ApiResponse<[ENTITY_NAME]Dto>>
+    
+    @PUT("[entity_name_lower]/{id}")
+    suspend fun update(
+        @Path("id") id: Long,
+        @Body dto: [ENTITY_NAME]Dto
+    ): Response<ApiResponse<[ENTITY_NAME]Dto>>
+    
+    @HTTP(method = "DELETE", path = "[entity_name_lower]/{id}", hasBody = true)
+    suspend fun delete(@Path("id") id: Long): Response<ApiResponse<Unit>>
+    
+    @GET("[entity_name_lower]/search")
+    suspend fun search(@Query("q") query: String): Response<ApiResponse<List<[ENTITY_NAME]Dto>>>
+}
+
+data class [ENTITY_NAME]Dto(
+    val id: Long? = null,
+    val name: String,
+    val description: String? = null
+)
+
+data class ApiResponse<T>(
+    val success: Boolean,
+    val data: T? = null,
+    val message: String? = null
+)
