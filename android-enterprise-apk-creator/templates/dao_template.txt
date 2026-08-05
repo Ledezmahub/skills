@@ -1,0 +1,41 @@
+package com.[company].[appname].data.local.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * Data Access Object for [ENTITY_NAME]
+ */
+@Dao
+interface [ENTITY_NAME]Dao {
+    @Insert
+    suspend fun insert(entity: [ENTITY_NAME]): Long
+    
+    @Insert
+    suspend fun insertAll(entities: List<[ENTITY_NAME]>)
+    
+    @Update
+    suspend fun update(entity: [ENTITY_NAME])
+    
+    @Delete
+    suspend fun delete(entity: [ENTITY_NAME])
+    
+    @Query("SELECT * FROM [table_name] WHERE id = :id")
+    fun getById(id: Long): Flow<[ENTITY_NAME]?> 
+    
+    @Query("SELECT * FROM [table_name] ORDER BY created_at DESC")
+    fun getAll(): Flow<List<[ENTITY_NAME]>>
+    
+    @Query("SELECT * FROM [table_name] WHERE [condition] ORDER BY created_at DESC")
+    fun getAllByCondition([PARAMS]): Flow<List<[ENTITY_NAME]>>
+    
+    @Query("DELETE FROM [table_name]")
+    suspend fun deleteAll()
+    
+    @Query("SELECT COUNT(*) FROM [table_name]")
+    fun getCount(): Flow<Int>
+}
