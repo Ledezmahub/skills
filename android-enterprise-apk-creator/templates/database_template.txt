@@ -1,0 +1,36 @@
+package com.company.appname.data.local.database
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import java.time.Instant
+
+@Database(
+    entities = [
+        // Add your entity classes here
+        // Example: Crop::class, Expense::class, Employee::class
+    ],
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(Converters::class)
+abstract class AppDatabase : RoomDatabase() {
+    // Add abstract DAO functions here
+    // Example: abstract fun cropDao(): CropDao
+    
+    companion object {
+        const val DATABASE_NAME = "app_database"
+    }
+}
+
+class Converters {
+    @TypeConverter
+    fun fromInstant(value: Instant?): Long? {
+        return value?.toEpochMilli()
+    }
+    
+    @TypeConverter
+    fun toInstant(value: Long?): Instant? {
+        return value?.let { Instant.ofEpochMilli(it) }
+    }
+}
