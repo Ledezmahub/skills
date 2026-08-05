@@ -1,0 +1,69 @@
+package com.[company].[appname].data.repository
+
+import com.[company].[appname].data.local.dao.[ENTITY_NAME]Dao
+import com.[company].[appname].data.local.entity.[ENTITY_NAME]
+import com.[company].[appname].domain.model.[ENTITY_NAME] as Domain[ENTITY_NAME]
+import com.[company].[appname].domain.repository.[ENTITY_NAME]Repository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+/**
+ * Repository implementation for [ENTITY_NAME]
+ */
+class [ENTITY_NAME]RepositoryImpl @Inject constructor(
+    private val [entity_name_lower]Dao: [ENTITY_NAME]Dao
+) : [ENTITY_NAME]Repository {
+    override fun getAll(): Flow<List<Domain[ENTITY_NAME]>> {
+        return [entity_name_lower]Dao.getAll().map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+    
+    override fun getById(id: Long): Flow<Domain[ENTITY_NAME]?> {
+        return [entity_name_lower]Dao.getById(id).map { entity ->
+            entity?.toDomain()
+        }
+    }
+    
+    override suspend fun insert(entity: Domain[ENTITY_NAME]): Long {
+        return [entity_name_lower]Dao.insert(entity.toEntity())
+    }
+    
+    override suspend fun update(entity: Domain[ENTITY_NAME]) {
+        [entity_name_lower]Dao.update(entity.toEntity())
+    }
+    
+    override suspend fun delete(entity: Domain[ENTITY_NAME]) {
+        [entity_name_lower]Dao.delete(entity.toEntity())
+    }
+    
+    override fun search(query: String): Flow<List<Domain[ENTITY_NAME]>> {
+        return [entity_name_lower]Dao.getAll().map { entities ->
+            entities.filter { 
+                it.name.contains(query, ignoreCase = true)
+            }.map { it.toDomain() }
+        }
+    }
+}
+
+/**
+ * Extension functions for mapping
+ */
+fun [ENTITY_NAME].toDomain(): Domain[ENTITY_NAME] {
+    return Domain[ENTITY_NAME](
+        id = this.id,
+        name = this.name,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt
+    )
+}
+
+fun Domain[ENTITY_NAME].toEntity(): [ENTITY_NAME] {
+    return [ENTITY_NAME](
+        id = this.id,
+        name = this.name,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt
+    )
+}
